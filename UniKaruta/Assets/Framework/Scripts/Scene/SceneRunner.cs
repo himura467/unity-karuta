@@ -33,51 +33,56 @@ namespace UniKaruta.Framework.Scripts.Scene
                 var scene = SceneManager.GetSceneByName(sceneName);
                 SceneManager.SetActiveScene(scene);
 
-                using var hierarchy = getHierarchy();
-
-                UnityEngine.Debug.Log("OnSceneCreated");
-                await service.OnSceneCreated(cancelToken);
-                await hierarchy.OnSceneCreated(cancelToken);
-                await controller.OnSceneCreated(service, hierarchy, cancelToken);
-
-                var cancelTokenSourceForRun = CancellationTokenSource.CreateLinkedTokenSource(cancelToken);
-
-                void OnNextRun(Func<ISceneContext, CancellationToken, UniTask> nextRunSceneAsync)
+                try
                 {
-                    cancelTokenSourceForRun.Cancel();
-                    _nextRunSceneAsync = nextRunSceneAsync;
-                }
+                    using var hierarchy = getHierarchy();
 
-                using (context.SubscribeNext(OnNextRun))
+                    UnityEngine.Debug.Log("OnSceneCreated");
+                    await service.OnSceneCreated(cancelToken);
+                    await hierarchy.OnSceneCreated(cancelToken);
+                    await controller.OnSceneCreated(service, hierarchy, cancelToken);
+
+                    using var cancelTokenSourceForRun = CancellationTokenSource.CreateLinkedTokenSource(cancelToken);
+
+                    void OnNextRun(Func<ISceneContext, CancellationToken, UniTask> nextRunSceneAsync)
+                    {
+                        cancelTokenSourceForRun.Cancel();
+                        _nextRunSceneAsync = nextRunSceneAsync;
+                    }
+
+                    using (context.SubscribeNext(OnNextRun))
+                    {
+                        try
+                        {
+                            if (!skipLoading)
+                            {
+                                _onLoadingToggled.OnNext(false);
+                            }
+
+                            UnityEngine.Debug.Log("Run");
+                            await controller.Run(context, service, hierarchy, cancelTokenSourceForRun.Token);
+                        }
+                        catch (OperationCanceledException e)
+                        {
+                            UnityEngine.Debug.Log(e);
+                        }
+                        finally
+                        {
+                            if (!skipLoading)
+                            {
+                                _onLoadingToggled.OnNext(true);
+                            }
+                        }
+                    }
+
+                    UnityEngine.Debug.Log("OnSceneDestroyed");
+                    await controller.OnSceneDestroyed(service, hierarchy, cancelToken);
+                    await service.OnSceneDestroyed(cancelToken);
+                }
+                finally
                 {
-                    try
-                    {
-                        if (!skipLoading)
-                        {
-                            _onLoadingToggled.OnNext(false);
-                        }
-
-                        UnityEngine.Debug.Log("Run");
-                        await controller.Run(context, service, hierarchy, cancelTokenSourceForRun.Token);
-                    }
-                    catch (OperationCanceledException e)
-                    {
-                        UnityEngine.Debug.Log(e);
-                    }
-                    finally
-                    {
-                        if (!skipLoading)
-                        {
-                            _onLoadingToggled.OnNext(true);
-                        }
-                    }
+                    await SceneManager.UnloadSceneAsync(sceneName, UnloadSceneOptions.None);
                 }
-
-                UnityEngine.Debug.Log("OnSceneDestroyed");
-                await controller.OnSceneDestroyed(service, hierarchy, cancelToken);
-                await service.OnSceneDestroyed(cancelToken);
-
-                await SceneManager.UnloadSceneAsync(sceneName, UnloadSceneOptions.None);
             }
         }
 
