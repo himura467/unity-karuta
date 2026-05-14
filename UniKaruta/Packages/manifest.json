@@ -42,7 +42,8 @@
     "com.unity.modules.xr": "1.0.0",
     "com.cysharp.unitask": "2.5.10",
     "com.cysharp.r3": "1.3.0",
-    "jp.hadashikick.vcontainer": "1.18.0"
+    "jp.hadashikick.vcontainer": "1.18.0",
+    "com.github-glitchenzo.nugetforunity": "4.5.0"
   },
   "scopedRegistries": [
     {
@@ -51,6 +52,7 @@
       "scopes": [
         "com.cysharp.r3",
         "com.cysharp.unitask",
+        "com.github-glitchenzo.nugetforunity",
         "jp.hadashikick.vcontainer"
       ]
     }
