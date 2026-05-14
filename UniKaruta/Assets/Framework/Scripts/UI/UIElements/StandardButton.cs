@@ -59,9 +59,12 @@ namespace UniKaruta.Framework.Scripts.UI.UIElements
                 }
 
                 _modifier = value;
-                AddToClassList(GetRootModifierClassName(_modifier));
-                _button.AddToClassList(GetButtonModifierClassName(_modifier));
-                _label.AddToClassList(GetLabelModifierClassName(_modifier));
+                if (!string.IsNullOrEmpty(_modifier))
+                {
+                    AddToClassList(GetRootModifierClassName(_modifier));
+                    _button.AddToClassList(GetButtonModifierClassName(_modifier));
+                    _label.AddToClassList(GetLabelModifierClassName(_modifier));
+                }
             }
         }
 
