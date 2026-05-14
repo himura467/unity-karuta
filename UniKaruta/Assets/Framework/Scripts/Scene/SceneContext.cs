@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using UniRx;
+using R3;
 using VContainer;
 
 namespace UniKaruta.Framework.Scripts.Scene

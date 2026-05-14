@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using UniRx;
+using R3;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
 
@@ -9,7 +9,7 @@ namespace UniKaruta.Framework.Scripts.UI.Extensions
 {
     public static class UIElementsExtensions
     {
-        public static IObservable<Unit> OnClickAsObservable(this Button source)
+        public static Observable<Unit> OnClickAsObservable(this Button source)
         {
             return Observable.FromEvent(
                 h => source.clicked += h,

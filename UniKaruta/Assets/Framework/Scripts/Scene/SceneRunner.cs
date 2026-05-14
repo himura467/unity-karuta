@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using UniRx;
+using R3;
 using UnityEngine.SceneManagement;
 
 namespace UniKaruta.Framework.Scripts.Scene
@@ -13,7 +13,7 @@ namespace UniKaruta.Framework.Scripts.Scene
         private readonly BehaviorSubject<bool> _onLoadingToggled = new(true);
         private Func<ISceneContext, CancellationToken, UniTask> _nextRunSceneAsync;
         private Func<ISceneContext, CancellationToken, UniTask> _currentRunSceneAsync;
-        public IObservable<bool> OnLoadingToggled => _onLoadingToggled;
+        public Observable<bool> OnLoadingToggled => _onLoadingToggled;
 
         public async UniTask RunSceneAsync<TService, THierarchy, TUI>(
             ISceneContext context,

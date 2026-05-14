@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UniKaruta.Framework.Scripts.UI.Extensions;
-using UniRx;
+using R3;
 using UnityEngine.UIElements;
 
 namespace UniKaruta.Framework.Scripts.UI.UIElements
@@ -65,7 +65,7 @@ namespace UniKaruta.Framework.Scripts.UI.UIElements
             }
         }
 
-        public IObservable<Unit> OnClicked => _button.OnClickAsObservable();
+        public Observable<Unit> OnClicked => _button.OnClickAsObservable();
 
         public void SetButtonEnabled(bool enabled)
         {
