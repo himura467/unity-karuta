@@ -107,7 +107,7 @@ namespace UniKaruta.Framework.Scripts.Scene
                 if (_nextRunSceneAsync == null)
                 {
                     _currentRunSceneAsync = null;
-                    _nextRunSceneAsync = _runSceneAsyncStack.Pop();
+                    _runSceneAsyncStack.TryPop(out _nextRunSceneAsync);
                 }
             }
         }
