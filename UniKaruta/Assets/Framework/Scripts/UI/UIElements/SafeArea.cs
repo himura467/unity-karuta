@@ -14,7 +14,7 @@ namespace UniKaruta.Framework.Scripts.UI.UIElements
 
         void LayoutChanged(GeometryChangedEvent e)
         {
-            if (panel is not IRuntimePanel)
+            if (panel == null || panel.contextType != ContextType.Player)
                 return;
 
             var safeArea = Screen.safeArea;
