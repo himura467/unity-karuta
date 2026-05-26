@@ -1,0 +1,17 @@
+{
+    "name": "UniKaruta.App",
+    "rootNamespace": "UniKaruta.Scripts.App",
+    "references": [
+        "GUID:1baf1ffff1031e948b3b228ab3453251",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
