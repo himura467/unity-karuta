@@ -9,15 +9,22 @@ namespace UniKaruta.Scripts.App
     {
         protected NetworkRunner Runner { get; }
 
+        private bool _disposed;
+
         protected NetworkRunnerCallbacks(NetworkRunner runner)
         {
-            Runner = runner;
+            Runner = runner ?? throw new ArgumentNullException(nameof(runner));
             Runner.AddCallbacks(this);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
-            Runner.RemoveCallbacks(this);
+            if (_disposed) return;
+            _disposed = true;
+            if (Runner != null)
+            {
+                Runner.RemoveCallbacks(this);
+            }
         }
 
         public virtual void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
