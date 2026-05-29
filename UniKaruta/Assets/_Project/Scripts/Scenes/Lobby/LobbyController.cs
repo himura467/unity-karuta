@@ -25,10 +25,15 @@ namespace UniKaruta.Scripts.Scenes.Lobby
                     {
                         var mode = selectedMode.Value;
                         selectedMode = null;
+                        hierarchy.UI.SetButtonsEnabled(false);
                         var ok = await service.StartGameAsync(mode, cancelToken);
                         if (ok)
                         {
                             // context.ChangeScene(new GameTransitionArgs());
+                        }
+                        else
+                        {
+                            hierarchy.UI.SetButtonsEnabled(true);
                         }
                     }
                     await UniTask.Yield(cancelToken);

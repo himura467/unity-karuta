@@ -21,5 +21,11 @@ namespace UniKaruta.Scripts.Scenes.Lobby
 
         public Observable<Unit> OnHostClicked => _hostButton.OnClicked;
         public Observable<Unit> OnJoinClicked => _joinButton.OnClicked;
+
+        public void SetButtonsEnabled(bool enabled)
+        {
+            _hostButton.SetEnabled(enabled);
+            _joinButton.SetEnabled(enabled);
+        }
     }
 }
