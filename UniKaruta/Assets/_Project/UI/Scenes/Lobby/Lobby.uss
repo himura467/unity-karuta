@@ -1,0 +1,16 @@
+.lobby-root {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.lobby-title {
+    font-size: 32px;
+    color: white;
+    margin-bottom: 32px;
+}
+
+.lobby-button {
+    margin: 8px;
+    width: 200px;
+}
