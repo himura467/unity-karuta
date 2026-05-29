@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:framework="UniKaruta.Framework.Scripts.UI.UIElements" editor-extension-mode="False">
+    <Style src="../../Global.uss" />
+    <Style src="Lobby.uss" />
+    <ui:VisualElement name="lobby-root" class="lobby-root">
+        <ui:Label name="lobby-title" text="UniKaruta Lobby" class="lobby-title" />
+        <framework:StandardButton name="host-button" text="Host" modifier="primary" class="lobby-button" />
+        <framework:StandardButton name="join-button" text="Join" modifier="secondary" class="lobby-button" />
+    </ui:VisualElement>
+</ui:UXML>

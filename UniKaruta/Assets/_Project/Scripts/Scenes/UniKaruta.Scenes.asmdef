@@ -1,13 +1,13 @@
 {
-    "name": "UniKaruta.App",
-    "rootNamespace": "UniKaruta.Scripts.App",
+    "name": "UniKaruta.Scenes",
+    "rootNamespace": "UniKaruta.Scripts.Scenes",
     "references": [
-        "GUID:1baf1ffff1031e948b3b228ab3453251",
         "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
-        "GUID:f0a4ac85c27db44be95c147f6c9f90c3",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:77221876cc6b8244180b96e320b1bcd4",
+        "GUID:1baf1ffff1031e948b3b228ab3453251",
         "GUID:560820e434a524a35a93d104b73c1a0a",
-        "GUID:9a91cd61ddbac483eba9534c51f53172"
+        "GUID:c34703649ecb74895873ccfa7ec81794"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
