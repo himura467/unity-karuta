@@ -8,9 +8,25 @@ namespace UniKaruta.Scripts.Network
     public class PlayerRegistry : NetworkBehaviour, INetworkRunnerCallbacks
     {
         public const int MaxPlayers = 8;
+        public const int MinPlayers = 2;
+
+        public event Action GameBelowMinimumPlayers;
 
         [Networked, Capacity(MaxPlayers)]
         public NetworkArray<PlayerNetworkData> Players { get; }
+
+        public int RegisteredPlayerCount
+        {
+            get
+            {
+                int count = 0;
+                for (int i = 0; i < MaxPlayers; i++)
+                    if (Players[i].IsRegistered) count++;
+                return count;
+            }
+        }
+
+        public bool IsBelowMinimumPlayers => RegisteredPlayerCount < MinPlayers;
 
         public override void Spawned() => Runner.AddCallbacks(this);
 
@@ -28,6 +44,7 @@ namespace UniKaruta.Scripts.Network
             if (!Object.HasStateAuthority) return;
             if (player.AsIndex >= MaxPlayers) return;
             Players.Set(player.AsIndex, default);
+            if (IsBelowMinimumPlayers) GameBelowMinimumPlayers?.Invoke();
         }
 
         void INetworkRunnerCallbacks.OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
