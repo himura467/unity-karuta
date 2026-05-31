@@ -19,12 +19,14 @@ namespace UniKaruta.Scripts.Network
         void INetworkRunnerCallbacks.OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
             if (!Object.HasStateAuthority) return;
+            if (player.AsIndex >= MaxPlayers) return;
             Players.Set(player.AsIndex, new PlayerNetworkData { Player = player, IsRegistered = true });
         }
 
         void INetworkRunnerCallbacks.OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             if (!Object.HasStateAuthority) return;
+            if (player.AsIndex >= MaxPlayers) return;
             Players.Set(player.AsIndex, default);
         }
 
