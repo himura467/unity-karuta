@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
 
-namespace UniKaruta.Scripts.App
+namespace UniKaruta.Scripts.Network
 {
     public abstract class NetworkRunnerCallbacks : INetworkRunnerCallbacks, IDisposable
     {
