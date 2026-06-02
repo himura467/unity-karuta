@@ -9,6 +9,19 @@ namespace UniKaruta.Framework.Scripts.UI.Extensions
 {
     public static class UIElementsExtensions
     {
+        public static Observable<Unit> OnEventAsObservable<TEvent>(this VisualElement source)
+            where TEvent : EventBase<TEvent>, new()
+        {
+            return Observable.FromEvent<EventCallback<TEvent>, TEvent>(
+                h => e => h(e),
+                h => source.RegisterCallback(h),
+                h => source.UnregisterCallback(h))
+                .Select(_ => Unit.Default);
+        }
+
+        public static Observable<Unit> OnPointerDownAsObservable(this VisualElement source)
+            => source.OnEventAsObservable<PointerDownEvent>();
+
         public static Observable<Unit> OnClickAsObservable(this Button source)
         {
             return Observable.FromEvent(
