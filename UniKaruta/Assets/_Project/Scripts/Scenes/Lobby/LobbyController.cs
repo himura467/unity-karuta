@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using R3;
 using UniKaruta.Framework.Scripts.Scene;
+using UniKaruta.Scripts.Scenes.Game;
 
 namespace UniKaruta.Scripts.Scenes.Lobby
 {
@@ -29,7 +30,7 @@ namespace UniKaruta.Scripts.Scenes.Lobby
                         var ok = await service.StartGameAsync(mode, cancelToken);
                         if (ok)
                         {
-                            // context.ChangeScene(new GameTransitionArgs());
+                            context.ChangeScene(new GameTransitionArgs());
                         }
                         else
                         {
