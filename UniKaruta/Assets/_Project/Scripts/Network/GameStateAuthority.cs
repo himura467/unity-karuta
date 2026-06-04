@@ -28,6 +28,11 @@ namespace UniKaruta.Scripts.Network
                 if (!Runner.TryGetInputForPlayer(player, out KarutaInput input)) continue;
 
                 var playerIndex = player.AsIndex;
+                if (playerIndex >= PlayerRegistry.MaxPlayers)
+                {
+                    UnityEngine.Debug.LogError($"Player {player} has out-of-range index {playerIndex}");
+                    continue;
+                }
                 if (Runner.Tick < PlayerLockoutUntilTick[playerIndex]) continue;
 
                 var cardId = input.TargetCardId;
