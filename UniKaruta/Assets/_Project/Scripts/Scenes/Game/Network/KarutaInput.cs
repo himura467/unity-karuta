@@ -1,6 +1,6 @@
 using Fusion;
 
-namespace UniKaruta.Scripts.Network
+namespace UniKaruta.Scripts.Scenes.Game.Network
 {
     public struct KarutaInput : INetworkInput
     {

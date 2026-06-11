@@ -1,6 +1,7 @@
 using Fusion;
+using UniKaruta.Scripts.Network;
 
-namespace UniKaruta.Scripts.Network
+namespace UniKaruta.Scripts.Scenes.Game.Network
 {
     public class GameStateAuthority : NetworkBehaviour
     {
