@@ -1,6 +1,6 @@
 using Fusion;
 using UniKaruta.Framework.Scripts.Scene;
-using UniKaruta.Scripts.Network;
+using UniKaruta.Scripts.Scenes.Game.Network;
 
 namespace UniKaruta.Scripts.Scenes.Game
 {

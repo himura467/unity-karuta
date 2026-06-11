@@ -1,7 +1,7 @@
 using Fusion;
 using UniKaruta.Scripts.Network;
 
-namespace UniKaruta.Scripts.Scenes.Game
+namespace UniKaruta.Scripts.Scenes.Game.Network
 {
     public class GameNetworkCallbacks : NetworkRunnerCallbacks
     {
