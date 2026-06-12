@@ -21,10 +21,10 @@ namespace UniKaruta.Scripts.Scenes.Game
             _networkCallbacks = new GameNetworkCallbacks(runner);
         }
 
-        public void SpawnCards(NetworkObject cardPrefab, CardData[] cards)
+        public void SpawnCards(NetworkObject cardPrefab, IReadOnlyList<CardData> cards)
         {
             if (!_runner.IsServer) return;
-            for (var i = 0; i < cards.Length; i++)
+            for (var i = 0; i < cards.Count; i++)
             {
                 var cardId = i;
                 _runner.Spawn(cardPrefab, onBeforeSpawned: (runner, obj) =>
@@ -32,7 +32,7 @@ namespace UniKaruta.Scripts.Scenes.Game
                     obj.GetComponent<NetworkCard>().CardId = cardId;
                 });
             }
-            _authority.CardCount = cards.Length;
+            _authority.CardCount = cards.Count;
         }
 
         public async UniTask WaitForCardsAsync(CancellationToken cancelToken)

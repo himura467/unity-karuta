@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Fusion;
 using UniKaruta.Framework.Scripts.Scene;
 using UniKaruta.Scripts.Data;
@@ -14,7 +15,7 @@ namespace UniKaruta.Scripts.Scenes.Game
         private CardDatabase _cardDatabase;
 
         public NetworkObject CardPrefab => _cardPrefab;
-        public CardData[] Cards => _cardDatabase.Cards;
+        public IReadOnlyList<CardData> Cards => _cardDatabase.Cards;
 
         protected override GameUI GetSceneUI(UIDocument uiDocument)
         {

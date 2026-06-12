@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UniKaruta.Scripts.Data
@@ -8,6 +9,6 @@ namespace UniKaruta.Scripts.Data
         [SerializeField]
         private CardData[] _cards;
 
-        public CardData[] Cards => _cards;
+        public IReadOnlyList<CardData> Cards => _cards;
     }
 }
