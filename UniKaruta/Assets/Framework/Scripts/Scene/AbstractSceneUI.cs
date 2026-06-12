@@ -7,11 +7,11 @@ namespace UniKaruta.Framework.Scripts.Scene
 {
     public abstract class AbstractSceneUI : ISceneUI
     {
-        private readonly VisualElement _root;
+        protected readonly VisualElement Root;
 
         protected AbstractSceneUI(VisualElement root)
         {
-            _root = root;
+            Root = root;
         }
 
         public UniTask ShowErrorIfNeedAsync(IReadOnlyList<int> errorCodes, CancellationToken cancelToken)

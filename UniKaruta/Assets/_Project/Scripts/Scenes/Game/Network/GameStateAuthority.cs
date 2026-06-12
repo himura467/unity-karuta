@@ -9,6 +9,9 @@ namespace UniKaruta.Scripts.Scenes.Game.Network
         private const int LockoutDurationTicks = 30;
 
         [Networked]
+        public int CardCount { get; set; }
+
+        [Networked]
         public int CurrentTargetCardId { get; set; }
 
         [Networked, Capacity(MaxCards)]

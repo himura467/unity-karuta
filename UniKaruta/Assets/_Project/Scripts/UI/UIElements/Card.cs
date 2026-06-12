@@ -13,6 +13,11 @@ namespace UniKaruta.Scripts.UI.UIElements
             AddToClassList(RootClassName);
         }
 
+        public Card(int cardId) : this()
+        {
+            CardId = cardId;
+        }
+
         public int CardId { get; private set; }
 
         public Observable<Unit> OnPointerDown => this.OnPointerDownAsObservable();
