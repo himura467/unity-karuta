@@ -7,6 +7,17 @@ namespace UniKaruta.Scripts.Scenes.Game
 {
     public class GameController : AbstractController<GameService, GameHierarchy, GameUI>
     {
+        public override async UniTask OnSceneCreated(
+            GameService service,
+            GameHierarchy hierarchy,
+            CancellationToken cancelToken)
+        {
+            service.SpawnCards(hierarchy.CardPrefab, hierarchy.Cards);
+            await service.WaitForCardsAsync(cancelToken);
+            foreach (var id in service.GetSpawnedCardIds())
+                hierarchy.UI.AddCard(id);
+        }
+
         public override async UniTask Run(
             ISceneContext context,
             GameService service,
