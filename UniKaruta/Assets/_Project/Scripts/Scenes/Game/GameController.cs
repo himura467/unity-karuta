@@ -24,16 +24,24 @@ namespace UniKaruta.Scripts.Scenes.Game
             GameHierarchy hierarchy,
             CancellationToken cancelToken)
         {
-            var cardId = -1;
+            var pendingPhraseId = -1;
+            var pendingCardId = -1;
 
-            using (hierarchy.UI.OnCardPointerDown.Subscribe(id => cardId = id))
+            using (service.OnReadingCueFired.Subscribe(id => pendingPhraseId = id))
+            using (hierarchy.UI.OnCardPointerDown.Subscribe(id => pendingCardId = id))
             {
                 while (true)
                 {
-                    if (cardId >= 0)
+                    if (pendingPhraseId >= 0)
                     {
-                        service.TakeCard(cardId);
-                        cardId = -1;
+                        UnityEngine.Debug.Assert(pendingPhraseId < hierarchy.Cards.Count, $"Out-of-range phrase ID: {pendingPhraseId}");
+                        hierarchy.OnReadingCueFired(hierarchy.Cards[pendingPhraseId]);
+                        pendingPhraseId = -1;
+                    }
+                    if (pendingCardId >= 0)
+                    {
+                        service.TakeCard(pendingCardId);
+                        pendingCardId = -1;
                     }
                     await UniTask.Yield(cancelToken);
                 }
