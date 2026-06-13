@@ -13,7 +13,7 @@ namespace UniKaruta.Scripts.Scenes.Lobby
         private readonly StandardButton _hostButton;
         private readonly StandardButton _joinButton;
 
-        public LobbyUI(VisualElement root) : base(root)
+        public LobbyUI(VisualElement root)
         {
             _hostButton = root.Q<StandardButton>(HostButtonName);
             _joinButton = root.Q<StandardButton>(JoinButtonName);
