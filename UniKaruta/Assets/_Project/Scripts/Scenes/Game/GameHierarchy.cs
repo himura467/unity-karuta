@@ -21,5 +21,10 @@ namespace UniKaruta.Scripts.Scenes.Game
         {
             return new GameUI(uiDocument.rootVisualElement);
         }
+
+        public void OnReadingCueFired(CardData card)
+        {
+            UI.OnReadingCueFired(card.DisplayName);
+        }
     }
 }

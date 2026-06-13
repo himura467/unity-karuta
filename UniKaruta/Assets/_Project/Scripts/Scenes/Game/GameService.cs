@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using R3;
 using UniKaruta.Framework.Scripts.Scene;
 using UniKaruta.Scripts.Data;
 using UniKaruta.Scripts.Scenes.Game.Network;
@@ -20,6 +21,8 @@ namespace UniKaruta.Scripts.Scenes.Game
             _authority = authority;
             _networkCallbacks = new GameNetworkCallbacks(runner);
         }
+
+        public Observable<int> OnReadingCueFired => _authority.OnReadingCueFired;
 
         public void SpawnCards(NetworkObject cardPrefab, IReadOnlyList<CardData> cards)
         {
