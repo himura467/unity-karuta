@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="../../Global.uss" />
+    <Style src="Game.uss" />
+    <ui:VisualElement name="game-root" class="game-root">
+        <ui:Label name="reading-cue" class="reading-cue" />
+        <ui:VisualElement name="card-field" class="card-field" />
+    </ui:VisualElement>
+</ui:UXML>

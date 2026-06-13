@@ -1,0 +1,19 @@
+.game-root {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.reading-cue {
+    font-size: 32px;
+    color: white;
+    align-self: flex-start;
+    margin-bottom: 32px;
+}
+
+.card-field {
+    flex: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
