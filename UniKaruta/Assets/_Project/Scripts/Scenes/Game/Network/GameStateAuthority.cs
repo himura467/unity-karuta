@@ -38,7 +38,10 @@ namespace UniKaruta.Scripts.Scenes.Game.Network
         public override void Spawned()
         {
             if (Object.HasStateAuthority)
+            {
                 CurrentTargetCardId = -1;
+                ReadingCueTargetTick = -1;
+            }
         }
 
         private void AdvanceToNextPhrase()
@@ -96,7 +99,7 @@ namespace UniKaruta.Scripts.Scenes.Game.Network
         public override void FixedUpdateNetwork()
         {
             if (!Runner.IsResimulation &&
-                ReadingCueTargetTick > 0 &&
+                ReadingCueTargetTick >= 0 &&
                 Runner.Tick >= ReadingCueTargetTick &&
                 CurrentTargetCardId >= 0 &&
                 CurrentTargetCardId != _lastFiredTargetCardId)
