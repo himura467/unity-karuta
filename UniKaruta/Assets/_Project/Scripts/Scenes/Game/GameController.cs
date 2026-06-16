@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -9,15 +8,13 @@ namespace UniKaruta.Scripts.Scenes.Game
 {
     public class GameController : AbstractController<GameService, GameHierarchy, GameUI>
     {
-        private IReadOnlyList<int> _playerIds;
-
         public override async UniTask OnSceneCreated(
             GameService service,
             GameHierarchy hierarchy,
             CancellationToken cancelToken)
         {
-            _playerIds = service.GetActivePlayerIds().ToList();
-            hierarchy.UI.InitPlayerDashboards(_playerIds);
+            var playerIds = service.GetActivePlayerIds().ToList();
+            hierarchy.UI.InitPlayerDashboards(playerIds);
 
             service.SpawnCards(hierarchy.CardPrefab, hierarchy.Cards);
             await service.WaitForCardsAsync(cancelToken);
