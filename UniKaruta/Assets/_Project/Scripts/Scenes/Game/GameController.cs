@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -12,6 +13,9 @@ namespace UniKaruta.Scripts.Scenes.Game
             GameHierarchy hierarchy,
             CancellationToken cancelToken)
         {
+            var playerIds = service.GetActivePlayerIds().ToList();
+            hierarchy.UI.InitPlayerDashboards(playerIds);
+
             service.SpawnCards(hierarchy.CardPrefab, hierarchy.Cards);
             await service.WaitForCardsAsync(cancelToken);
             foreach (var id in service.GetSpawnedCardIds())
@@ -28,6 +32,8 @@ namespace UniKaruta.Scripts.Scenes.Game
             var pendingCardId = -1;
 
             using (service.OnReadingCueFired.Subscribe(id => pendingPhraseId = id))
+            using (service.OnPlayerScoreChanged.Subscribe(t => hierarchy.UI.UpdatePlayerScore(t.playerId, t.score)))
+            using (service.OnPlayerPenaltyChanged.Subscribe(t => hierarchy.UI.UpdatePlayerPenalty(t.playerId, t.isInPenalty)))
             using (hierarchy.UI.OnCardPointerDown.Subscribe(id => pendingCardId = id))
             {
                 while (true)

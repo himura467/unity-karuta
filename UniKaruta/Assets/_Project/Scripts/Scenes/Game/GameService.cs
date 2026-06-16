@@ -23,6 +23,8 @@ namespace UniKaruta.Scripts.Scenes.Game
         }
 
         public Observable<int> OnReadingCueFired => _authority.OnReadingCueFired;
+        public Observable<(int playerId, int score)> OnPlayerScoreChanged => _authority.OnPlayerScoreChanged;
+        public Observable<(int playerId, bool isInPenalty)> OnPlayerPenaltyChanged => _authority.OnPlayerPenaltyChanged;
 
         public void SpawnCards(NetworkObject cardPrefab, IReadOnlyList<CardData> cards)
         {
@@ -45,6 +47,12 @@ namespace UniKaruta.Scripts.Scenes.Game
                 var cards = _runner.GetAllBehaviours<NetworkCard>();
                 return _authority.CardCount > 0 && cards.Count == _authority.CardCount;
             }, cancellationToken: cancelToken);
+        }
+
+        public IEnumerable<int> GetActivePlayerIds()
+        {
+            foreach (var player in _runner.ActivePlayers)
+                yield return player.AsIndex;
         }
 
         public IEnumerable<int> GetSpawnedCardIds()

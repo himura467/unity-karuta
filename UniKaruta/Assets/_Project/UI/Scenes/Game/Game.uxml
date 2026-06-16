@@ -3,6 +3,7 @@
     <Style src="Game.uss" />
     <ui:VisualElement name="game-root" class="game-root">
         <ui:Label name="reading-cue" class="reading-cue" />
+        <ui:VisualElement name="players-container" class="players-container" />
         <ui:VisualElement name="card-field" class="card-field" />
     </ui:VisualElement>
 </ui:UXML>
