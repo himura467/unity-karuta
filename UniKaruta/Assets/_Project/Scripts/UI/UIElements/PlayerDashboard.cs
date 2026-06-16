@@ -1,3 +1,5 @@
+using System;
+using R3;
 using UnityEngine.UIElements;
 
 namespace UniKaruta.Scripts.UI.UIElements
@@ -7,12 +9,10 @@ namespace UniKaruta.Scripts.UI.UIElements
         private const string RootClassName = "player-dashboard";
         private const string NameLabelClassName = RootClassName + "__name";
         private const string ScoreLabelClassName = RootClassName + "__score";
-        private const string PenaltyLabelClassName = RootClassName + "__penalty";
-        private const string PenaltyText = "Penalty";
+        private const string PenaltyModifierClassName = RootClassName + "--penalty";
 
         private readonly Label _nameLabel;
         private readonly Label _scoreLabel;
-        private readonly Label _penaltyLabel;
 
         public PlayerDashboard()
         {
@@ -25,10 +25,6 @@ namespace UniKaruta.Scripts.UI.UIElements
             _scoreLabel = new Label();
             _scoreLabel.AddToClassList(ScoreLabelClassName);
             Add(_scoreLabel);
-
-            _penaltyLabel = new Label();
-            _penaltyLabel.AddToClassList(PenaltyLabelClassName);
-            Add(_penaltyLabel);
         }
 
         public PlayerDashboard(string playerName) : this()
@@ -42,7 +38,11 @@ namespace UniKaruta.Scripts.UI.UIElements
 
         public void SetScore(int score) => _scoreLabel.text = score.ToString();
 
-        public void SetPenalty(bool isInPenalty) => _penaltyLabel.text = isInPenalty ? PenaltyText : string.Empty;
+        public void SetPenalty(bool isInPenalty) => EnableInClassList(PenaltyModifierClassName, isInPenalty);
+
+        public IDisposable BindScore(Observable<int> score) => score.Subscribe(SetScore);
+
+        public IDisposable BindPenalty(Observable<bool> penalty) => penalty.Subscribe(SetPenalty);
 
         public new class UxmlFactory : UxmlFactory<PlayerDashboard, UxmlTraits> { }
 
