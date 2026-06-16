@@ -10,7 +10,7 @@
     margin-bottom: 32px;
 }
 
-.lobby-button {
+.play-button {
     margin: 8px;
     width: 200px;
 }

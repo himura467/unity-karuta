@@ -28,7 +28,7 @@ namespace UniKaruta.Scripts.Scenes.Game
 
         public void SpawnCards(NetworkObject cardPrefab, IReadOnlyList<CardData> cards)
         {
-            if (!_runner.IsServer) return;
+            if (!_authority.Object.HasStateAuthority) return;
             for (var i = 0; i < cards.Count; i++)
             {
                 var cardId = i;
