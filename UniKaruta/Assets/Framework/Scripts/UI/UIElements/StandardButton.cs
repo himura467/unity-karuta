@@ -9,8 +9,8 @@ namespace UniKaruta.Framework.Scripts.UI.UIElements
     public class StandardButton : VisualElement
     {
         private const string RootClassName = "standard-button";
-        private static readonly string ButtonClassName = $"{RootClassName}__button";
-        private static readonly string LabelClassName = $"{ButtonClassName}__label";
+        private const string ButtonClassName = RootClassName + "__button";
+        private const string LabelClassName = ButtonClassName + "__label";
 
         private static string GetRootModifierClassName(string modifier) => $"{RootClassName}--{modifier}";
         private static string GetButtonModifierClassName(string modifier) => $"{ButtonClassName}--{modifier}";

@@ -5,9 +5,10 @@ namespace UniKaruta.Scripts.UI.UIElements
     public class PlayerDashboard : VisualElement
     {
         private const string RootClassName = "player-dashboard";
-        private static readonly string NameLabelClassName = $"{RootClassName}__name";
-        private static readonly string ScoreLabelClassName = $"{RootClassName}__score";
-        private static readonly string PenaltyLabelClassName = $"{RootClassName}__penalty";
+        private const string NameLabelClassName = RootClassName + "__name";
+        private const string ScoreLabelClassName = RootClassName + "__score";
+        private const string PenaltyLabelClassName = RootClassName + "__penalty";
+        private const string PenaltyText = "Penalty";
 
         private readonly Label _nameLabel;
         private readonly Label _scoreLabel;
@@ -34,13 +35,14 @@ namespace UniKaruta.Scripts.UI.UIElements
         {
             SetPlayerName(playerName);
             SetScore(0);
+            SetPenalty(false);
         }
 
         public void SetPlayerName(string name) => _nameLabel.text = name;
 
         public void SetScore(int score) => _scoreLabel.text = score.ToString();
 
-        public void SetPenalty(bool isInPenalty) => _penaltyLabel.text = isInPenalty ? "Penalty" : string.Empty;
+        public void SetPenalty(bool isInPenalty) => _penaltyLabel.text = isInPenalty ? PenaltyText : string.Empty;
 
         public new class UxmlFactory : UxmlFactory<PlayerDashboard, UxmlTraits> { }
 
