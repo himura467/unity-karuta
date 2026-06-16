@@ -7,25 +7,17 @@ namespace UniKaruta.Scripts.Scenes.Lobby
 {
     public class LobbyUI : AbstractSceneUI
     {
-        private const string HostButtonName = "host-button";
-        private const string JoinButtonName = "join-button";
+        private const string PlayButtonName = "play-button";
 
-        private readonly StandardButton _hostButton;
-        private readonly StandardButton _joinButton;
+        private readonly StandardButton _playButton;
 
         public LobbyUI(VisualElement root)
         {
-            _hostButton = root.Q<StandardButton>(HostButtonName);
-            _joinButton = root.Q<StandardButton>(JoinButtonName);
+            _playButton = root.Q<StandardButton>(PlayButtonName);
         }
 
-        public Observable<Unit> OnHostClicked => _hostButton.OnClicked;
-        public Observable<Unit> OnJoinClicked => _joinButton.OnClicked;
+        public Observable<Unit> OnPlayClicked => _playButton.OnClicked;
 
-        public void SetButtonsEnabled(bool enabled)
-        {
-            _hostButton.SetEnabled(enabled);
-            _joinButton.SetEnabled(enabled);
-        }
+        public void SetPlayEnabled(bool enabled) => _playButton.SetEnabled(enabled);
     }
 }

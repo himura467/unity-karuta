@@ -14,9 +14,9 @@ namespace UniKaruta.Scripts.Scenes.Lobby
             _runner = runner;
         }
 
-        public async UniTask<bool> StartGameAsync(GameMode mode, CancellationToken cancelToken)
+        public async UniTask<bool> StartGameAsync(CancellationToken cancelToken)
         {
-            var result = await _runner.StartGame(new StartGameArgs { GameMode = mode });
+            var result = await _runner.StartGame(new StartGameArgs { GameMode = GameMode.Shared });
             return result.Ok;
         }
     }
