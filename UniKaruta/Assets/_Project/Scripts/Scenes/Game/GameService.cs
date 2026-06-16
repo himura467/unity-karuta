@@ -23,8 +23,8 @@ namespace UniKaruta.Scripts.Scenes.Game
         }
 
         public Observable<int> OnReadingCueFired => _authority.OnReadingCueFired;
-        public Observable<(int playerId, int score)> OnPlayerScoreChanged => _authority.OnPlayerScoreChanged;
-        public Observable<(int playerId, bool isInPenalty)> OnPlayerPenaltyChanged => _authority.OnPlayerPenaltyChanged;
+        public Observable<int> GetPlayerScore(int playerId) => _authority.GetPlayerScore(playerId);
+        public Observable<bool> GetPlayerPenalty(int playerId) => _authority.GetPlayerPenalty(playerId);
 
         public void SpawnCards(NetworkObject cardPrefab, IReadOnlyList<CardData> cards)
         {

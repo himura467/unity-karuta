@@ -30,28 +30,64 @@ namespace UniKaruta.Scripts.Scenes.Game.Network
         [Networked, Capacity(PlayerRegistry.MaxPlayers)]
         public NetworkArray<int> PlayerLockoutUntilTick { get; }
 
+        private ChangeDetector _changeDetector;
+
         private readonly Subject<int> _readingCueFired = new();
-        private readonly Subject<(int playerId, int score)> _playerScoreChanged = new();
-        private readonly Subject<(int playerId, bool isInPenalty)> _playerPenaltyChanged = new();
+        private ReactiveProperty<int>[] _playerScores;
+        private ReactiveProperty<bool>[] _playerPenalties;
 
         public Observable<int> OnReadingCueFired => _readingCueFired;
-        public Observable<(int playerId, int score)> OnPlayerScoreChanged => _playerScoreChanged;
-        public Observable<(int playerId, bool isInPenalty)> OnPlayerPenaltyChanged => _playerPenaltyChanged;
+        public Observable<int> GetPlayerScore(int playerId) => _playerScores[playerId];
+        public Observable<bool> GetPlayerPenalty(int playerId) => _playerPenalties[playerId];
 
         private int _lastFiredTargetCardId = -1;
-        private int[] _lastScores;
-        private bool[] _lastPenaltyStates;
 
         public override void Spawned()
         {
-            _lastScores = new int[PlayerScores.Length];
-            _lastPenaltyStates = new bool[PlayerScores.Length];
-
+            _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
+            _playerScores = new ReactiveProperty<int>[PlayerRegistry.MaxPlayers];
+            _playerPenalties = new ReactiveProperty<bool>[PlayerRegistry.MaxPlayers];
+            for (var i = 0; i < PlayerRegistry.MaxPlayers; i++)
+            {
+                _playerScores[i] = new ReactiveProperty<int>();
+                _playerPenalties[i] = new ReactiveProperty<bool>();
+            }
             if (Object.HasStateAuthority)
             {
                 CurrentTargetCardId = -1;
                 ReadingCueTargetTick = -1;
             }
+        }
+
+        public override void Despawned(NetworkRunner runner, bool hasState)
+        {
+            foreach (var score in _playerScores) score.Dispose();
+            foreach (var penalty in _playerPenalties) penalty.Dispose();
+        }
+
+        public override void Render()
+        {
+            foreach (var propertyName in _changeDetector.DetectChanges(this, out var previousBuffer, out var currentBuffer))
+            {
+                switch (propertyName)
+                {
+                    case nameof(PlayerScores):
+                    {
+                        var reader = GetArrayReader<int>(nameof(PlayerScores));
+                        var previous = reader.Read(previousBuffer);
+                        var current = reader.Read(currentBuffer);
+                        for (var i = 0; i < current.Length; i++)
+                        {
+                            if (previous[i] != current[i])
+                                _playerScores[i].Value = current[i];
+                        }
+                        break;
+                    }
+                }
+            }
+
+            for (var i = 0; i < _playerPenalties.Length; i++)
+                _playerPenalties[i].Value = Runner.Tick < PlayerLockoutUntilTick[i];
         }
 
         private void AdvanceToNextPhrase()
@@ -117,23 +153,6 @@ namespace UniKaruta.Scripts.Scenes.Game.Network
                 {
                     _lastFiredTargetCardId = CurrentTargetCardId;
                     _readingCueFired.OnNext(CurrentTargetCardId);
-                }
-
-                foreach (var player in Runner.ActivePlayers)
-                {
-                    var i = player.AsIndex;
-                    var score = PlayerScores[i];
-                    if (score != _lastScores[i])
-                    {
-                        _lastScores[i] = score;
-                        _playerScoreChanged.OnNext((i, score));
-                    }
-                    var isInPenalty = Runner.Tick < PlayerLockoutUntilTick[i];
-                    if (isInPenalty != _lastPenaltyStates[i])
-                    {
-                        _lastPenaltyStates[i] = isInPenalty;
-                        _playerPenaltyChanged.OnNext((i, isInPenalty));
-                    }
                 }
             }
 
