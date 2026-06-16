@@ -37,9 +37,9 @@
     color: white;
 }
 
-.player-dashboard__penalty {
-    font-size: 16px;
-    color: red;
+.player-dashboard--penalty {
+    border-color: red;
+    background-color: rgba(255, 0, 0, 0.3);
 }
 
 .card-field {

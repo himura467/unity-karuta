@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using R3;
 using UniKaruta.Framework.Scripts.Scene;
@@ -18,7 +19,6 @@ namespace UniKaruta.Scripts.Scenes.Game
 
         private readonly Subject<int> _cardPointerDown = new();
         private readonly CompositeDisposable _disposables = new();
-        private readonly Dictionary<int, PlayerDashboard> _playerDashboards = new();
 
         public GameUI(VisualElement root)
         {
@@ -31,26 +31,18 @@ namespace UniKaruta.Scripts.Scenes.Game
 
         public void OnReadingCueFired(string phraseText) => _readingCueLabel.text = phraseText;
 
-        public void InitPlayerDashboards(IReadOnlyList<int> playerIds)
+        public void InitPlayerDashboards(
+            IReadOnlyList<int> playerIds,
+            Func<int, Observable<int>> getPlayerScore,
+            Func<int, Observable<bool>> getPlayerPenalty)
         {
             foreach (var playerId in playerIds)
             {
                 var dashboard = new PlayerDashboard($"Player {playerId + 1}");
                 _playersContainer.Add(dashboard);
-                _playerDashboards[playerId] = dashboard;
+                _disposables.Add(dashboard.BindScore(getPlayerScore(playerId)));
+                _disposables.Add(dashboard.BindPenalty(getPlayerPenalty(playerId)));
             }
-        }
-
-        public void UpdatePlayerScore(int playerId, int score)
-        {
-            if (_playerDashboards.TryGetValue(playerId, out var dashboard))
-                dashboard.SetScore(score);
-        }
-
-        public void UpdatePlayerPenalty(int playerId, bool isInPenalty)
-        {
-            if (_playerDashboards.TryGetValue(playerId, out var dashboard))
-                dashboard.SetPenalty(isInPenalty);
         }
 
         public void AddCard(int cardId)
