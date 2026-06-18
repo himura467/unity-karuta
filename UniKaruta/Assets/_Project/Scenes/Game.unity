@@ -167,6 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aae64f354912d49b8b0db9942ebe691a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cardPrefab: {fileID: 5152457322844570304, guid: e66bf062d53ba49fb900a89785c56e31, type: 3}
+  _cardDatabase: {fileID: 11400000, guid: 5d8a8012df4bc498ebed1830043af736, type: 2}
 --- !u!114 &984711045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,7 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 6c17c7808ea0c4ed8adf35e5eb771965, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: c6073195d037840da90daf4962a83a5b, type: 3}
   m_SortingOrder: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
