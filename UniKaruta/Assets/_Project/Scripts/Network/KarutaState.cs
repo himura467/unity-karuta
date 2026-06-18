@@ -1,10 +1,9 @@
+using System;
 using Fusion;
-using R3;
-using UniKaruta.Scripts.Network;
 
-namespace UniKaruta.Scripts.Scenes.Game.Network
+namespace UniKaruta.Scripts.Network
 {
-    public class GameStateAuthority : NetworkBehaviour
+    public class KarutaState : NetworkBehaviour
     {
         private const int MaxCards = 128;
         private const int LockoutDurationTicks = 30;
@@ -32,37 +31,20 @@ namespace UniKaruta.Scripts.Scenes.Game.Network
 
         private ChangeDetector _changeDetector;
 
-        private readonly Subject<int> _readingCueFired = new();
-        private ReactiveProperty<int>[] _playerScores;
-        private ReactiveProperty<bool>[] _playerPenalties;
-
-        public Observable<int> OnReadingCueFired => _readingCueFired;
-        public Observable<int> GetPlayerScore(int playerId) => _playerScores[playerId];
-        public Observable<bool> GetPlayerPenalty(int playerId) => _playerPenalties[playerId];
+        public event Action<int> ReadingCueFired;
+        public event Action<int, int> PlayerScoreChanged;
+        public event Action<int, bool> PlayerPenaltyChanged;
 
         private int _lastFiredTargetCardId = -1;
 
         public override void Spawned()
         {
             _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
-            _playerScores = new ReactiveProperty<int>[PlayerRegistry.MaxPlayers];
-            _playerPenalties = new ReactiveProperty<bool>[PlayerRegistry.MaxPlayers];
-            for (var i = 0; i < PlayerRegistry.MaxPlayers; i++)
-            {
-                _playerScores[i] = new ReactiveProperty<int>();
-                _playerPenalties[i] = new ReactiveProperty<bool>();
-            }
             if (Object.HasStateAuthority)
             {
                 CurrentTargetCardId = -1;
                 ReadingCueTargetTick = -1;
             }
-        }
-
-        public override void Despawned(NetworkRunner runner, bool hasState)
-        {
-            foreach (var score in _playerScores) score.Dispose();
-            foreach (var penalty in _playerPenalties) penalty.Dispose();
         }
 
         public override void Render()
@@ -79,15 +61,15 @@ namespace UniKaruta.Scripts.Scenes.Game.Network
                         for (var i = 0; i < current.Length; i++)
                         {
                             if (previous[i] != current[i])
-                                _playerScores[i].Value = current[i];
+                                PlayerScoreChanged?.Invoke(i, current[i]);
                         }
                         break;
                     }
                 }
             }
 
-            for (var i = 0; i < _playerPenalties.Length; i++)
-                _playerPenalties[i].Value = Runner.Tick < PlayerLockoutUntilTick[i];
+            for (var i = 0; i < PlayerRegistry.MaxPlayers; i++)
+                PlayerPenaltyChanged?.Invoke(i, Runner.Tick < PlayerLockoutUntilTick[i]);
         }
 
         private void AdvanceToNextPhrase()
@@ -152,7 +134,7 @@ namespace UniKaruta.Scripts.Scenes.Game.Network
                     CurrentTargetCardId != _lastFiredTargetCardId)
                 {
                     _lastFiredTargetCardId = CurrentTargetCardId;
-                    _readingCueFired.OnNext(CurrentTargetCardId);
+                    ReadingCueFired?.Invoke(CurrentTargetCardId);
                 }
             }
 

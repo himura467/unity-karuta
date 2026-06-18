@@ -1,7 +1,7 @@
 using System;
 using Fusion;
 using UniKaruta.Framework.Scripts.Scene;
-using UniKaruta.Scripts.Scenes.Game.Network;
+using UniKaruta.Scripts.Network;
 using VContainer;
 
 namespace UniKaruta.Scripts.Scenes.Game
@@ -12,10 +12,10 @@ namespace UniKaruta.Scripts.Scenes.Game
             IObjectResolver objectResolver)
         {
             var runner = objectResolver.Resolve<NetworkRunner>();
-            var authority = objectResolver.Resolve<GameStateAuthority>();
+            var state = objectResolver.Resolve<KarutaState>();
             return (
                 new GameController(),
-                new GameService(runner, authority),
+                new GameService(runner, state),
                 UnityEngine.Object.FindObjectOfType<GameHierarchy>
             );
         }
